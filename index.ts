@@ -8,10 +8,10 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.set("port", process.env.PORT || 4000);
+app.set("port", process.env.PORT || 5000);
 
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to my api");
+  res.status(200).send("Bienvenido");
 });
 
 app.use("*", (req, res) => {
@@ -25,12 +25,14 @@ const io = new Server(server, {
     methods: ["GET", "POST", "PATCH", "DELETE", "PUT"],
   },
 });
+
 io.on(EventsSocket.CONNECTION, (socket) => {
   socket.on(EventsSocket.SEND_DATA, (data: any) => {
     console.log(data);
     io.emit(EventsSocket.RECEIVE_DATA, data);
   });
 });
+
 
 server.listen(app.get("port"), () => {
   console.log("Servidor corriendo en puerto", app.get("port"));
